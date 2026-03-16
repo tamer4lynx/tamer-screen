@@ -26,6 +26,7 @@ export interface SafeAreaProps extends ViewProps {
 
 export interface AvoidKeyboardProps extends ViewProps {
   behavior?: 'padding' | 'position'
+  animate?: boolean
 }
 
 const ALL_EDGES = ['top', 'right', 'bottom', 'left'] as const
@@ -95,7 +96,7 @@ export function SafeArea(props: SafeAreaProps) {
 }
 
 export function AvoidKeyboard(props: AvoidKeyboardProps) {
-  const { children, style, behavior = 'padding', ...rest } = props
+  const { children, style, behavior = 'padding', animate = true, ...rest } = props
   const keyboard = useKeyboard()
   const insets = useInsets()
   const safeArea = useSafeAreaContext()
@@ -112,12 +113,20 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
   const marginBottom =
     behavior === 'padding' && cancelBottomInset > 0 ? -Math.round(cancelBottomInset) : undefined
 
+  const duration = keyboard.duration > 0 ? keyboard.duration : 250
+  const transition = animate
+    ? (behavior === 'padding'
+        ? `padding-bottom ${duration}ms cubic-bezier(0.17,0.59,0.4,0.77)`
+        : `bottom ${duration}ms cubic-bezier(0.17,0.59,0.4,0.77)`)
+    : undefined
+
   return (
     <view
       style={{
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
+        ...(transition ? { transition } : {}),
         paddingBottom,
         ...(bottom !== undefined ? { position: 'relative' as const, bottom } : {}),
         ...(marginBottom !== undefined ? { marginBottom } : {}),

@@ -36,7 +36,7 @@ import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from 'tamer-scree
 |-----------|-------|-------------|
 | `Screen` | `ScreenProps` (extends ViewProps) | Full-screen flex container |
 | `SafeArea` | `edges?: ('top' \| 'right' \| 'bottom' \| 'left')[]` | Applies padding from system insets |
-| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'` | Shifts content when keyboard opens |
+| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'`, `animate?: boolean` | Shifts content when keyboard opens; `animate={false}` snaps into place |
 
 | Hook | Returns | Description |
 |------|---------|-------------|
