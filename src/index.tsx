@@ -1,7 +1,7 @@
 /// <reference types="@lynx-js/react" />
 import { createContext, useContext } from '@lynx-js/react'
-import { useInsets, useKeyboard } from 'tamer-insets'
-import type { InsetsWithRaw, KeyboardStateWithRaw } from 'tamer-insets'
+import { useInsets, useKeyboard } from '@tamer4lynx/tamer-insets'
+import type { InsetsWithRaw, KeyboardStateWithRaw } from '@tamer4lynx/tamer-insets'
 import type { ViewProps } from '@lynx-js/types'
 
 export type { InsetsWithRaw, KeyboardStateWithRaw }

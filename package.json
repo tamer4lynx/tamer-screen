@@ -1,6 +1,7 @@
 {
-  "name": "tamer-screen",
-  "version": "0.1.0",
+  "name": "@tamer4lynx/tamer-screen",
+  "publishConfig": { "access": "public", "tag": "prerelease" },
+  "version": "0.0.1",
   "type": "module",
   "description": "Layout primitives for full-screen content: safe areas and keyboard avoidance in Lynx.",
   "main": "dist/src/index.js",
@@ -12,7 +13,9 @@
       "default": "./dist/src/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "@lynx-js/react": ">=0.100.0",
     "preact": "*",
@@ -22,7 +25,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "tamer-insets": "file:../tamer-insets"
+    "@tamer4lynx/tamer-insets": "^0.0.1"
   },
   "devDependencies": {
     "@lynx-js/react": "^0.112.1",
@@ -33,6 +36,14 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamer4lynx/tamer-screen.git"
+  },
+  "homepage": "https://github.com/tamer4lynx/tamer-screen#readme",
+  "bugs": {
+    "url": "https://github.com/tamer4lynx/tamer-screen/issues"
   },
   "author": "Nanofuxion",
   "license": "MIT"

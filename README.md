@@ -5,7 +5,7 @@ Layout primitives for full-screen content: safe areas and keyboard avoidance in 
 ## Installation
 
 ```bash
-npm install tamer-screen
+npm install @tamer4lynx/tamer-screen
 ```
 
 Add to your app's dependencies and run `t4l link`. Depends on **tamer-insets**.
@@ -13,7 +13,7 @@ Add to your app's dependencies and run `t4l link`. Depends on **tamer-insets**.
 ## Usage
 
 ```tsx
-import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from 'tamer-screen'
+import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from '@tamer4lynx/tamer-screen'
 
 // Full-screen flex container
 <Screen>
