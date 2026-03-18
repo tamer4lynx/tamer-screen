@@ -12,7 +12,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "jsxImportSource": "@lynx-js/react",
     "noEmit": false,
     "isolatedModules": true,
