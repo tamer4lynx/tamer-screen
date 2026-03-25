@@ -23,7 +23,7 @@ import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from '@tamer4lynx
 </Screen>
 
 // Keyboard-avoiding container
-<AvoidKeyboard behavior="padding">
+<AvoidKeyboard>
   <view>
     <input placeholder="Input stays visible when keyboard opens" />
   </view>
@@ -36,7 +36,7 @@ import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from '@tamer4lynx
 |-----------|-------|-------------|
 | `Screen` | `ScreenProps` (extends ViewProps) | Full-screen flex container |
 | `SafeArea` | `edges?: ('top' \| 'right' \| 'bottom' \| 'left')[]` | Applies padding from system insets |
-| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'`, `animate?: boolean` | Shifts content when keyboard opens; `animate={false}` snaps into place |
+| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'` (default **`position`**: `relative` + `bottom`; use **`padding`** if you need bottom padding instead), `animate?: boolean` | Adds offset from `useKeyboard().height` (native reports height above system nav / home indicator). **`animate`** animates **`padding-bottom`** or **`bottom`** depending on `behavior`. Set **`animate={false}`** to snap without transition. |
 
 | Hook | Returns | Description |
 |------|---------|-------------|

@@ -1,7 +1,7 @@
 {
   "name": "@tamer4lynx/tamer-screen",
   "publishConfig": { "access": "public", "tag": "prerelease" },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "Layout primitives for full-screen content: safe areas and keyboard avoidance in Lynx.",
   "main": "dist/src/index.jsx",
@@ -22,7 +22,7 @@
     "react": "^17.0.0"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc && cp src/avoid-keyboard.css dist/src/avoid-keyboard.css"
   },
   "dependencies": {
     "@tamer4lynx/tamer-insets": "^0.0.1"

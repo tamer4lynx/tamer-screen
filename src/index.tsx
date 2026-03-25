@@ -1,5 +1,6 @@
 import { createContext, useContext } from '@lynx-js/react'
 import { useInsets, useKeyboard } from '@tamer4lynx/tamer-insets'
+import './avoid-keyboard.css'
 import type { InsetsWithRaw, KeyboardStateWithRaw } from '@tamer4lynx/tamer-insets'
 import type { ViewProps } from '@lynx-js/types'
 
@@ -25,11 +26,11 @@ export interface SafeAreaProps extends ViewProps {
 
 export interface AvoidKeyboardProps extends ViewProps {
   behavior?: 'padding' | 'position'
+  /** When true, animates `padding-bottom` (`behavior="padding"`) or `bottom` (`behavior="position"`). */
   animate?: boolean
 }
 
 const ALL_EDGES = ['top', 'right', 'bottom', 'left'] as const
-const px = (value: number) => `${Math.round(value)}px`
 
 export function Screen(props: ScreenProps) {
   const { children, style, ...rest } = props
@@ -94,42 +95,62 @@ export function SafeArea(props: SafeAreaProps) {
   )
 }
 
+const PADDING_TRANSITION_CLASS = 'tamer-AvoidKeyboard_paddingTransition'
+const POSITION_TRANSITION_CLASS = 'tamer-AvoidKeyboard_positionTransition'
+
 export function AvoidKeyboard(props: AvoidKeyboardProps) {
-  const { children, style, behavior = 'padding', animate = true, ...rest } = props
+  const { children, style, behavior = 'position', animate = true, className, ...rest } = props
   const keyboard = useKeyboard()
   const insets = useInsets()
   const safeArea = useSafeAreaContext()
-
-  const keyboardOffset = keyboard.visible ? keyboard.height : 0
   const cancelBottomInset =
-    keyboard.visible && safeArea?.hasBottom ? insets.bottom : 0
+    safeArea?.hasBottom ? Math.round(insets.bottom) : 0
+
+  const keyboardLayout = Math.round(keyboard.height)
 
   const paddingBottom =
-    behavior === 'padding'
-      ? keyboardOffset
-      : 0
-  const bottom = behavior === 'position' ? keyboardOffset : undefined
-  const marginBottom =
-    behavior === 'padding' && cancelBottomInset > 0 ? -Math.round(cancelBottomInset) : undefined
+    behavior === 'padding' ? keyboardLayout : ('unset' as const)
+  const bottom =
+    behavior === 'position' ? keyboardLayout : ('unset' as const)
 
   const duration = keyboard.duration > 0 ? keyboard.duration : 250
-  const transition = animate
-    ? (behavior === 'padding'
-        ? `padding-bottom ${duration}ms cubic-bezier(0.17,0.59,0.4,0.77)`
-        : `bottom ${duration}ms cubic-bezier(0.17,0.59,0.4,0.77)`)
-    : undefined
+  const paddingTransition = animate && behavior === 'padding'
+  const positionTransition = animate && behavior === 'position'
+  const keyboardTransition =
+    paddingTransition || positionTransition
+  const cancelInsetStyle =
+    keyboard.visible && cancelBottomInset > 0
+      ? { marginBottom: -cancelBottomInset }
+      : {}
+  const keyboardDurationVars = keyboardTransition
+    ? ({ ['--tamer-avoid-keyboard-duration']: `${duration}ms` } as Record<string, string>)
+    : {}
+  const snapStyle = !animate ? { transition: 'none' as const } : {}
+  const mergedClassName = [
+    paddingTransition ? PADDING_TRANSITION_CLASS : undefined,
+    positionTransition ? POSITION_TRANSITION_CLASS : undefined,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ') || undefined
 
   return (
     <view
+      className={mergedClassName}
       style={{
         display: 'flex',
         flexDirection: 'column',
-        flexShrink: 0,
-        ...(transition ? { transition } : {}),
-        paddingBottom,
-        ...(bottom !== undefined ? { position: 'relative' as const, bottom } : {}),
-        ...(marginBottom !== undefined ? { marginBottom } : {}),
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0,
+        minHeight: 0,
+        // ...cancelInsetStyle,
         ...(style as object ?? {}),
+        bottom,
+        position: 'relative',
+        paddingBottom,
+        ...keyboardDurationVars,
+        ...snapStyle,
       }}
       {...rest}
     >
