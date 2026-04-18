@@ -5,7 +5,8 @@ import type { InsetsWithRaw, KeyboardStateWithRaw } from '@tamer4lynx/tamer-inse
 import type { ViewProps } from '@lynx-js/types'
 
 export type { InsetsWithRaw, KeyboardStateWithRaw }
-export { useInsets, useKeyboard }
+export { useInsets, useKeyboard, seedTamerInsets, TAMER_INSETS_SNAPSHOT_GLOBAL_KEY } from '@tamer4lynx/tamer-insets'
+export type { Insets } from '@tamer4lynx/tamer-insets'
 
 export const SafeAreaContext = createContext<{
   hasTop: boolean
@@ -140,10 +141,9 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: 0,
-        minHeight: 0,
+        // AvoidKeyboard is a layout helper for whatever content it wraps. It should not
+        // claim the remaining screen space by default, because bottom accessory bars
+        // inside pushed nav-screens can briefly expand/collapse during first layout.
         // ...cancelInsetStyle,
         ...(style as object ?? {}),
         bottom,
