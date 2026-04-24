@@ -61,10 +61,10 @@ export function SafeArea(props: SafeAreaProps) {
   const active = edges ?? ALL_EDGES
 
   const padding: ViewProps['style'] = {}
-  if (active.includes('top')) padding.paddingTop = insets.top
-  if (active.includes('right')) padding.paddingRight = insets.right
-  if (active.includes('bottom')) padding.paddingBottom = insets.bottom
-  if (active.includes('left')) padding.paddingLeft = insets.left
+  if (active.includes('top')) padding.paddingTop = insets.top ? `${insets.top}px` : 0
+  if (active.includes('right')) padding.paddingRight = insets.right ? `${insets.right}px` : 0
+  if (active.includes('bottom')) padding.paddingBottom = insets.bottom ? `${insets.bottom}px` : 0
+  if (active.includes('left')) padding.paddingLeft = insets.left ? `${insets.left}px` : 0
 
   const ctx = {
     hasTop: active.includes('top'),
