@@ -34,9 +34,9 @@ import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from '@tamer4lynx
 
 | Component | Props | Description |
 |-----------|-------|-------------|
-| `Screen` | `ScreenProps` (extends ViewProps) | Full-screen flex container |
-| `SafeArea` | `edges?: ('top' \| 'right' \| 'bottom' \| 'left')[]` | Applies padding from system insets |
-| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'` (default **`position`**: `relative` + `bottom`; use **`padding`** if you need bottom padding instead), `animate?: boolean` | Adds offset from `useKeyboard().height` (native reports height above system nav / home indicator). **`animate`** animates **`padding-bottom`** or **`bottom`** depending on `behavior`. Set **`animate={false}`** to snap without transition. |
+| `Screen` | `ScreenProps` (extends ViewProps) | Edge-to-edge full-screen flex container; provides screen layout context |
+| `SafeArea` | `edges?: ('top' \| 'right' \| 'bottom' \| 'left')[]` | Applies system-inset padding and keeps the padding additive with any explicit edge padding |
+| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'` (default **`position`**: `relative` + `bottom`; use **`padding`** if you need bottom padding instead), `animate?: boolean` | Adds only the clearance needed to stay above the keyboard based on the component’s own layout and the screen frame. **`animate`** animates **`padding-bottom`** or **`bottom`** depending on `behavior`. Set **`animate={false}`** to snap without transition. |
 
 | Hook | Returns | Description |
 |------|---------|-------------|
