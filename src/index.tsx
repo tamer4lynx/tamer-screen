@@ -300,9 +300,15 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
   const [layout, setLayout] = useState<ScreenLayout | null>(null)
   const [appliedOffset, setAppliedOffset] = useState(0)
 
+  useEffect(() => {
+    console.log('[AvoidKeyboard] keyboard state:', keyboard)
+    console.log('[AvoidKeyboard] screenLayout:', screenLayout)
+  }, [keyboard, screenLayout])
+
   const handleLayoutChange = composeLayoutChangeHandlers(
     (event) => {
       const next = normalizeLayout(event.detail)
+      console.log('[AvoidKeyboard] layout change:', next)
       setLayout((prev) => (sameLayout(prev, next) ? prev : next))
     },
     onLayoutChange,
@@ -318,6 +324,20 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
     keyboard.visible && keyboardHeight > 0 && hasMeasuredLayout
       ? Math.min(Math.round(keyboardHeight), Math.max(0, measuredOffset))
       : 0
+
+  if (keyboard.visible && keyboardHeight > 0) {
+    console.log('[AvoidKeyboard]', {
+      screenBottom,
+      measuredBottom,
+      keyboardHeight,
+      keyboardTop,
+      hasMeasuredLayout,
+      measuredOffset,
+      nextOffset,
+      screenLayout: { bottom: screenLayout?.bottom, height: screenLayout?.height },
+      layout: { bottom: layout?.bottom, height: layout?.height },
+    })
+  }
 
   useEffect(() => {
     if (nextOffset !== appliedOffset) {
