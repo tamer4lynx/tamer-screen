@@ -314,24 +314,17 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
   ]
     .filter(Boolean)
     .join(' ') || undefined
-  const userTransform = typeof userStyle.transform === 'string' ? userStyle.transform.trim() : ''
-  const positionTransform = behavior === 'position' && offset > 0 ? `translateY(-${px(offset)})` : ''
-  const transform = [userTransform || undefined, positionTransform || undefined].filter(Boolean).join(' ') || undefined
-  const resolvedStyle = {
-    ...userStyle,
-    ...(transform ? { transform } : userTransform ? { transform: userTransform } : {}),
-  }
-
   return (
     <view
       className={mergedClassName}
       style={{
-        ...(resolvedStyle as object),
+        ...(userStyle as object),
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         boxSizing: 'border-box',
         ...(behavior === 'padding' ? { marginBottom: px(offset) } : {}),
+        ...(behavior === 'position' ? { bottom: px(offset) } : {}),
         ...keyboardDurationVars,
         ...snapStyle,
       }}

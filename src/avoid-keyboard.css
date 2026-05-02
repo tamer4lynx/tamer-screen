@@ -4,6 +4,6 @@
 }
 
 .tamer-AvoidKeyboard_positionTransition {
-  transition: transform var(--tamer-avoid-keyboard-duration, 500ms)
+  transition: bottom var(--tamer-avoid-keyboard-duration, 500ms)
     cubic-bezier(0.17, 0.59, 0.4, 0.77);
 }
