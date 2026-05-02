@@ -296,8 +296,9 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
   const { rest, onLayoutChange } = splitLayoutChangeProps(propsWithoutOwn)
   const userStyle = cloneStyle(style)
   const keyboard = useKeyboard()
+  const insets = useInsets()
 
-  const offset = keyboard.visible && keyboard.height > 0 ? Math.round(keyboard.height) : 0
+  const offset = keyboard.visible && keyboard.height > 0 ? Math.round(keyboard.height + insets.bottom) : 0
 
   const duration = keyboard.duration > 0 ? keyboard.duration : 250
   const paddingTransition = animate && behavior === 'padding'
