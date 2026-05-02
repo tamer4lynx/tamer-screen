@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from '@lynx-js/react'
+import { createContext, useContext, useState } from '@lynx-js/react'
 import type { LayoutChangeEvent, ViewProps } from '@lynx-js/types'
 import { useInsets, useKeyboard } from '@tamer4lynx/tamer-insets'
 import type { InsetsWithRaw, KeyboardStateWithRaw } from '@tamer4lynx/tamer-insets'
@@ -296,54 +296,8 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
   const { rest, onLayoutChange } = splitLayoutChangeProps(propsWithoutOwn)
   const userStyle = cloneStyle(style)
   const keyboard = useKeyboard()
-  const screenLayout = useScreenContext()
-  const [layout, setLayout] = useState<ScreenLayout | null>(null)
-  const [appliedOffset, setAppliedOffset] = useState(0)
 
-  useEffect(() => {
-    console.log('[AvoidKeyboard] keyboard state:', keyboard)
-    console.log('[AvoidKeyboard] screenLayout:', screenLayout)
-  }, [keyboard, screenLayout])
-
-  const handleLayoutChange = composeLayoutChangeHandlers(
-    (event) => {
-      const next = normalizeLayout(event.detail)
-      console.log('[AvoidKeyboard] layout change:', next)
-      setLayout((prev) => (sameLayout(prev, next) ? prev : next))
-    },
-    onLayoutChange,
-  )
-
-  const screenBottom = screenLayout?.bottom ?? screenLayout?.height ?? 0
-  const measuredBottom = layout?.bottom ?? 0
-  const keyboardHeight = keyboard.visible ? keyboard.height : 0
-  const keyboardTop = screenBottom > 0 ? screenBottom - keyboardHeight : 0
-  const hasMeasuredLayout = screenBottom > 0 && measuredBottom > 0 && (layout?.height ?? 0) > 0
-  const measuredOffset = hasMeasuredLayout && keyboardTop > 0 ? Math.round(measuredBottom - keyboardTop) : 0
-  const nextOffset =
-    keyboard.visible && keyboardHeight > 0 && hasMeasuredLayout
-      ? Math.min(Math.round(keyboardHeight), Math.max(0, measuredOffset))
-      : 0
-
-  if (keyboard.visible && keyboardHeight > 0) {
-    console.log('[AvoidKeyboard]', {
-      screenBottom,
-      measuredBottom,
-      keyboardHeight,
-      keyboardTop,
-      hasMeasuredLayout,
-      measuredOffset,
-      nextOffset,
-      screenLayout: { bottom: screenLayout?.bottom, height: screenLayout?.height },
-      layout: { bottom: layout?.bottom, height: layout?.height },
-    })
-  }
-
-  useEffect(() => {
-    if (nextOffset !== appliedOffset) {
-      setAppliedOffset(nextOffset)
-    }
-  }, [appliedOffset, nextOffset])
+  const offset = keyboard.visible && keyboard.height > 0 ? Math.round(keyboard.height) : 0
 
   const duration = keyboard.duration > 0 ? keyboard.duration : 250
   const paddingTransition = animate && behavior === 'padding'
@@ -361,7 +315,7 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
     .filter(Boolean)
     .join(' ') || undefined
   const userTransform = typeof userStyle.transform === 'string' ? userStyle.transform.trim() : ''
-  const positionTransform = behavior === 'position' && appliedOffset > 0 ? `translateY(-${px(appliedOffset)})` : ''
+  const positionTransform = behavior === 'position' && offset > 0 ? `translateY(-${px(offset)})` : ''
   const transform = [userTransform || undefined, positionTransform || undefined].filter(Boolean).join(' ') || undefined
   const resolvedStyle = {
     ...userStyle,
@@ -377,11 +331,11 @@ export function AvoidKeyboard(props: AvoidKeyboardProps) {
         flexDirection: 'column',
         position: 'relative',
         boxSizing: 'border-box',
-        ...(behavior === 'padding' ? { paddingBottom: px(appliedOffset) } : {}),
+        ...(behavior === 'padding' ? { marginBottom: px(offset) } : {}),
         ...keyboardDurationVars,
         ...snapStyle,
       }}
-      {...getLayoutChangeProps(handleLayoutChange)}
+      {...getLayoutChangeProps(onLayoutChange)}
       {...rest}
     >
       {children}
