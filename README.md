@@ -22,12 +22,14 @@ import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from '@tamer4lynx
   </SafeArea>
 </Screen>
 
-// Keyboard-avoiding container
-<AvoidKeyboard>
-  <view>
-    <input placeholder="Input stays visible when keyboard opens" />
-  </view>
-</AvoidKeyboard>
+// Keyboard-avoiding container — AvoidKeyboard must be inside Screen
+<Screen>
+  <AvoidKeyboard>
+    <view>
+      <input placeholder="Input stays visible when keyboard opens" />
+    </view>
+  </AvoidKeyboard>
+</Screen>
 ```
 
 ## API
@@ -36,7 +38,7 @@ import { Screen, SafeArea, AvoidKeyboard, useSafeAreaContext } from '@tamer4lynx
 |-----------|-------|-------------|
 | `Screen` | `ScreenProps` (extends ViewProps) | Edge-to-edge full-screen flex container; provides screen layout context |
 | `SafeArea` | `edges?: ('top' \| 'right' \| 'bottom' \| 'left')[]` | Applies system-inset padding and keeps the padding additive with any explicit edge padding |
-| `AvoidKeyboard` | `behavior?: 'padding' \| 'position'` (default **`position`**: `relative` + `bottom`; use **`padding`** if you need bottom padding instead), `animate?: boolean` | Adds only the clearance needed to stay above the keyboard based on the component’s own layout and the screen frame. **`animate`** animates **`padding-bottom`** or **`bottom`** depending on `behavior`. Set **`animate={false}`** to snap without transition. |
+| `AvoidKeyboard` | `behavior?: ‘padding’ \| ‘position’` (default **`position`**: `relative` + `bottom`; use **`padding`** if you need bottom padding instead), `animate?: boolean` | Adds only the clearance needed to stay above the keyboard. **Requires `<Screen>` as an ancestor** — `position: relative` + `bottom` offset has no reference frame without it. **`animate`** animates **`padding-bottom`** or **`bottom`** depending on `behavior`. Set **`animate={false}`** to snap without transition. |
 
 | Hook | Returns | Description |
 |------|---------|-------------|
